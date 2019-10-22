@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <h2 class="display-5"><strong>{{item.title}}</strong></h2>
+    <hr class="my-4">
+    <p><strong class="text-primary">Description: </strong>{{item.description}}</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg"
+            href="{{url_for('editItem', category_name=item.category.name, item_name=item.title)}}"
+            role="button">Edit</a>
+        <a class="btn btn-danger btn-lg"
+            href="{{url_for('deleteItem', category_name=item.category.name, item_name=item.title)}}"
+            role="button">Delete</a>
+
+        <a class="btn btn-secondary btn-lg" href="{{url_for('showCategory', category_name=item.category.name)}}"
+            role="button">Back</a>
+    </p>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.close').click(function () {
+                $("#alertContainer").css("display", "none");
+            });
+            $(".alert").delay(4000).slideUp(100, function () {
+                
+            });
+        });    
+    </script>
+</head>
+
+<body>
+    <div class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Catalog App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor01">
+            </div>
+            {%if 'username' not in session %}
+            <a href="{{url_for('showLogin')}}"><button class="btn btn-secondary my-2 my-lg-0"
+                    type="submit">Login</button></a>
+            {% else %}
+            <a href="{{url_for('gdisconnect')}}"><button class="btn btn-secondary my-2 my-lg-0"
+                    type="submit">Logout</button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row divider blue">
+            <div class="col-md-12"></div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-dismissible alert-info fade show" id="alertContainer">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+            <div class='flash'>
+                <ul>
+                    {% for message in messages %}
+                    <li> <strong> {{ message }} </strong> </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {% endif %}
+        {% endwith %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>

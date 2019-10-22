@@ -1,0 +1,54 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <div class="row">
+        <!-- Categories List-->
+        <div class="col-4 offset-1">
+            <div class="row banner main">
+                <h2>Categories</h2>
+            </div>
+            <ul class="list-group mt-2"></ul>
+            {% for title in categories %}
+            <div class="row">
+                <a href="{{url_for('showCategory', category_name = title.name)}}" style="width: 100%;">
+                    <li
+                        class="list-group-item d-flex justify-content-between align-items-center {% if selected_category != -1 and selected_category.name == title.name %} active {% endif %}">
+                        <h3>{{title.name}}</h3>
+                        <span class="badge badge-primary badge-pill">{{category_counts[title.id]}}</span>
+                    </li>
+
+                </a>
+            </div>
+            {% endfor %}
+            </ul>
+        </div>
+        <!-- Items list -->
+        <div class="col-6 offset-1">
+            <!-- List title (header) -->
+            <div class="row banner mt-2">
+                {% if selected_category == -1 %}
+                <h3>Latest Items</h3>
+                {% else %}
+                <h3>{{selected_category.name}} Items ({{category_counts[selected_category.id]}} items)</h3>
+                {% endif %}
+            </div>
+            <!-- Items -->
+            <div class="list-group mt-2">
+                {% for item in latest_items %}
+                <a href="{{url_for('showItem', category_name=item.category.name, item_name=item.title)}}"
+                    class="list-group-item list-group-item-action">
+                    <strong class="text-primary">{{item.title}}</strong> {% if selected_category == -1 %}<em
+                        class="text-muted">({{item.category.name}})</em> {% endif %}
+                </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

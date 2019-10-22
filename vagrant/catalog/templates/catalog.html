@@ -1,0 +1,82 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="jumbotron">
+    <div class="row">
+        <!-- Categories List-->
+        <div class="col-4 offset-1">
+            <div class="row banner main">
+                <h2>Categories</h2>
+            </div>
+            <ul class="list-group mt-2"></ul>
+
+            {% for title in categories %}
+            <div class="row">
+                <li style="width: 100%;"
+                    class="list-group-item d-flex justify-content-between align-items-center {% if selected_category != -1 and selected_category.name == title.name %} active{% endif %}">
+                    <div class="col-7">
+                        <a href="{{url_for('showCategory', category_name = title.name)}}">
+                            <h3 {% if selected_category != -1 and selected_category.name == title.name %}
+                                class="text-light" {% endif %}>{{title.name}}</h3>
+                        </a>
+                    </div>
+                    <div class="col-1">
+                        <span class="badge badge-primary badge-pill">
+                            {{category_counts[title.id]}}
+                        </span>
+                    </div>
+
+                    <div class="col-2">
+                        <a class="badge badge-light badge-pill"
+                            href="{{url_for('editCategory', category_name=title.name)}}"><i class="fas fa-edit"></i>
+                            Edit</a>
+                    </div>
+                    <div class="col-1" data-toggle="tooltip" data-placement="top" title="Delete Category">
+                        <a href="{{url_for('deleteCategory', category_name=title.name)}}"><i
+                                class="fas fa-trash-alt text-danger"></i></a>
+                    </div>
+                </li>
+
+            </div>
+            {% endfor %}
+            <div class="row">
+                <li style="width: 100%;" class="list-group-item d-flex">
+                    <a href="{{url_for('addNewCategory')}}">
+                        <h5 class="text-primary"><i class="fas fa-plus-square"></i> Add Category</h5>
+                    </a>
+                </li>
+            </div>
+            </ul>
+        </div>
+        <!-- Items list -->
+        <div class="col-6 offset-1">
+            <!-- List title (header) -->
+            <a href="{{url_for('addNewItem')}}">
+                <h4><strong class="text-primary"><i class="fas fa-plus-square"></i> Add Item</strong></h4>
+            </a>
+            <div class="row banner mt-2">
+                {% if selected_category == -1 %}
+                <h3>Latest Items</h3>
+                {% else %}
+                <h3>{{selected_category.name}} Items ({{category_counts[selected_category.id]}} items)</h3>
+                {% endif %}
+            </div>
+            <!-- Items -->
+            <div class="list-group mt-2">
+                {% for item in latest_items %}
+                <a href="{{url_for('showItem', category_name=item.category.name, item_name=item.title)}}"
+                    class="list-group-item list-group-item-action">
+                    <strong class="text-primary">{{item.title}}</strong> {% if selected_category == -1 %}<em
+                        class="text-muted">({{item.category.name}})</em> {% endif %}
+                </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
